@@ -111,7 +111,7 @@ int main(void){
     volatile struct Buffer buffer {{},0,0};
 
     // This is the data to put into the buffer.
-    uint8_t data2store [] = "Print Me Later\n";
+    uint8_t data2store [] = "Print Me To Screen Later\n";
 
     std::cout << "We will start by storing a message in the buffer\n";
 
@@ -122,10 +122,14 @@ int main(void){
     while(i < sizeof(data2store) - 1){
 		
 		// TODO: Test for buffer full
-        // Store data byte in buffer
-        bufferWrite(&buffer, data2store[i]);
-        // Increment counter
-        i++;
+        // Store data byte in buffer unless it is full
+        if(bufferWrite(&buffer, data2store[i]) == 0){
+			// Increment counter
+			i++;
+		}else{
+			std::cout << "Buffer is Full!\n";
+			break;
+		}
     }
 
     std::cout << "We now have data in the buffer, time to read it\n";
